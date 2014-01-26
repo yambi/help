@@ -9,7 +9,7 @@ var paths;
 var circles;
 
 $(function(){
-    var prob = "prob/test.json";
+    var prob = "prob/"+document.location.search.substring(1)+".json";
     var field = $("#field")[0];
     var width = $(field).innerWidth();
     var height = $(field).innerHeight();
@@ -19,7 +19,7 @@ $(function(){
 
 function load(file){
     $.getJSON(file , function(data) {
-        p=data.p;
+        p=parseInt(data.p);
         vs=new Array();
         forward_edges=new Array();
         backward_edges=new Array();
@@ -40,8 +40,8 @@ function load(file){
             es.push({
                 head: this.head,
                 tail: this.tail,
-                label: this.label,
-                initial_label: this.label
+                label: parseInt(this.label),
+                initial_label: parseInt(this.label)
             });
             forward_edges[this.tail].push(i);
             backward_edges[this.head].push(i);
@@ -107,13 +107,12 @@ function redraw(){
 }
 
 function change(){
+    console.log(this.id);
     for(var i=0;i<forward_edges[this.id].length;++i){
-        var e = es[forward_edges[this.id][i]];
-        e.label=(e.label+1)%p;
+        es[forward_edges[this.id][i]].label=(es[forward_edges[this.id][i]].label+1)%p;
     }
     for(var i=0;i<backward_edges[this.id].length;++i){
-        var e = es[backward_edges[this.id][i]];
-        e.label=(e.label+p-1)%p;
+        es[backward_edges[this.id][i]].label=(es[backward_edges[this.id][i]].label+p-1)%p;
     }
     redraw();
 }

@@ -1,7 +1,11 @@
+body{
+    background-color:#e2e2e2;
+}
+
 #field{
-  width: 640px;
-  height: 480px;
-  background-color: #ddf;
-  border: 1px black solid;
+    width: 640px;
+    height: 480px;
+    background-color: #ddf;
+    border: 1px black solid;
 }
 
