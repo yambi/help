@@ -8,6 +8,8 @@ var forward_edges;//各点から出ていく枝集合
 var backward_edges;//各点に入る枝集合
 var paths;
 var circles;
+var s;
+var t;
 
 $(function(){
     var prob = "prob/"+document.location.search.substring(1)+".json";
@@ -25,6 +27,10 @@ $(function(){
 function load(file){
     $.getJSON(file , function(data) {
         p=parseInt(data.p);
+        s=parseInt(data.s);
+        if(isNaN(s))s=0;
+        t=parseInt(data.t);
+        if(isNaN(t))t=1;
         vs=new Array();
         forward_edges=new Array();
         backward_edges=new Array();
@@ -84,7 +90,7 @@ function draw(){
         var v = R.circle(vs[i].x,vs[i].y,radius);
         v.attr("stroke","#000");
         v.id=i;
-        if(i<=1){
+        if(i==s || i==t){
             v.attr("fill","#f00");
         }
         else{
@@ -97,8 +103,8 @@ function draw(){
         circles.push(v);
     }
 
-    R.text(vs[0].x,vs[0].y,"s").attr({"font": '18px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
-    R.text(vs[1].x,vs[1].y,"t").attr({"font": '18px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
+    R.text(vs[s].x,vs[s].y,"s").attr({"font": '18px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
+    R.text(vs[t].x,vs[t].y,"t").attr({"font": '18px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
 
     //lines
     L.text(20,15,"lines").attr({"font": '14px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
@@ -148,13 +154,13 @@ function check(){
         vs[i].reachable=false;
     }
     var stack = new Array();
-    stack.push(1);
-    stack.push(0);
+    stack.push(t);
+    stack.push(s);
     $("#info").text("");
     while(stack.length>0){
         var v = stack.pop();
         if(vs[v].reachable)continue;
-        if(v==1 && stack.length>0){
+        if(v==t && stack.length>0){
             $("#info").text("You win!");
         }
         vs[v].reachable=true;
