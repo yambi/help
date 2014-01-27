@@ -1,4 +1,5 @@
-var R;// Raphael
+var R;// Raphael field
+var L;// Raphael lines
 var vs;//頂点集合
 var es;//枝集合
 var p;//Z_p
@@ -11,9 +12,13 @@ var circles;
 $(function(){
     var prob = "prob/"+document.location.search.substring(1)+".json";
     var field = $("#field")[0];
-    var width = $(field).innerWidth();
-    var height = $(field).innerHeight();
-    R = Raphael(field,width,height);
+    var fwidth = $(field).innerWidth();
+    var fheight = $(field).innerHeight();
+    R = Raphael(field,fwidth,fheight);
+    var lines = $("#lines")[0];
+    var lwidth = $(lines).innerWidth();
+    var lheight = $(lines).innerHeight();
+    L = Raphael(lines,lwidth,lheight);
     load(prob);
 });
 
@@ -84,15 +89,33 @@ function draw(){
         }
         else{
             v.attr("fill",vs[i].reachable?"#f00":"#ff0");
+            v.attr("fill-opacity", 0.3);
             v.click(change);
-            v.mouseover(function(){this.animate({"fill-opacity": 0.3}, 300);})
-            v.mouseout(function(){this.animate({"fill-opacity": 1.0}, 300);});
+            v.mouseover(function(){this.animate({"fill-opacity": 1.0}, 300);})
+            v.mouseout(function(){this.animate({"fill-opacity": 0.3}, 300);});
         }
         circles.push(v);
     }
 
     R.text(vs[0].x,vs[0].y,"s").attr({"font": '18px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
     R.text(vs[1].x,vs[1].y,"t").attr({"font": '18px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
+
+    //lines
+    L.text(20,15,"lines").attr({"font": '14px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
+    for(var i=0;i<p;++i){
+        L.text(10,40+30*i,i).attr({"font": '12px Fontin-Sans, Arial', stroke: "none", fill: "#000"});
+        L.path([
+            'M', 20,40+30*i,
+            'L', 90,40+30*i
+        ]).attr({
+            'stroke-width': 5,
+            'stroke': Raphael.hsb(1.0/p*i, 1, 0.8),
+            //'arrow-start': 'oval-narrow-short'       
+        });
+
+        
+    }
+
 
 }
 function redraw(){
@@ -108,6 +131,10 @@ function redraw(){
 
 function change(){
     console.log(this.id);
+    var c = circles[this.id];
+    c.animate({r: radius+5}, 200);
+    setTimeout(function(){c.animate({r: radius}, 200);},200);
+
     for(var i=0;i<forward_edges[this.id].length;++i){
         es[forward_edges[this.id][i]].label=(es[forward_edges[this.id][i]].label+1)%p;
     }

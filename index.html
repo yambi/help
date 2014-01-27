@@ -11,15 +11,33 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="application/javascript" src="./js/help.js"></script>
 <title>Have an Exact Label Path?</title></head>
-<body>
-<h1> Have an Exact Label Path? </h1>
+<body onselectstart="return false">
+<h1> <span style="color:red;">H</span>ave an <span style="color:red;">E</span>xact <span style="color:red;">L</span>abel <span style="color:red;">P</span>ath? </h1>
 <p>
 <input type="button" id="reset" value="reset" onclick="reset()">
+<select onChange="top.location.href=value">
+<option value="#">problem</option>
+<option value="./index.html?test">test</option>
+<option value="./index.html?test2">test2</option>
+<option value="./index.html?test3">test3</option>
+</select>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<span id="info" style=""></span>
+<span id="info"></span>
 </p>
-<div id="field"></div>
-
+<table>
+<tr>
+  <td><div id="field"></div></td>
+  <td valign="top">
+    <div id="lines"></div>
+  </td>
+</tr>
+</table>
+<p>
 connect the vertices s and t with red edges.
+<ul>
+<li>頂点をクリックすると周りの枝の色が変わる</li>
+<li>色の変化：出ていく枝は+方向，入ってくる枝は-方向に1変わる</li>
+</ul>
+</p>
 </body>
 </html>

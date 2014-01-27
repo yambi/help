@@ -1,11 +1,39 @@
 body{
-    background-color:#e2e2e2;
+    background-color:#eee;
 }
+
+tr, td
+{
+  margin: 0px;
+  padding: 0px 8px;
+}
+
+p
+{
+  padding: 0px 8px;
+}
+
 
 #field{
     width: 640px;
     height: 480px;
-    background-color: #ddf;
-    border: 1px black solid;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 5px;
+    box-shadow: rgba(0,0,0,.5) -1px 1px 0, rgba(255,255,255,1) -1px 1px 0 inset;
+}
+
+#lines{
+    width: 100px;
+    height: 300px;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 5px;
+    box-shadow: rgba(0,0,0,.5) -1px 1px 0, rgba(255,255,255,1) -1px 1px 0 inset;
+}
+
+
+#info{
+    color: red;
 }
 
