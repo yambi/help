@@ -8,6 +8,7 @@ var forward_edges;//各点から出ていく枝集合
 var backward_edges;//各点に入る枝集合
 var paths;
 var circles;
+var step;
 var s;
 var t;
 var editable = true;
@@ -22,6 +23,7 @@ $(function(){
     var lwidth = $(lines).innerWidth();
     var lheight = $(lines).innerHeight();
     L = Raphael(lines,lwidth,lheight);
+    step=0;
     load(prob);
 });
 
@@ -132,6 +134,7 @@ function redraw(){
         //else circles[i].attr("fill",(vs[i].reachable>=0)?"#f00":"#ff0");
         else circles[i].animate({"fill":(vs[i].reachable>=0)?"#f00":"#ff0"},200);
     }
+    $("#step").text(step);
 }
 
 function change(){
@@ -147,6 +150,7 @@ function change(){
     for(var i=0;i<backward_edges[this.id].length;++i){
         es[backward_edges[this.id][i]].label=(es[backward_edges[this.id][i]].label+p-1)%p;
     }
+    step++;
     redraw();
 }
 function celebrate(v){
@@ -197,5 +201,6 @@ function reset(){
     for(var i=0;i<es.length;++i){
         es[i].label=es[i].initial_label;
     }
+    step=0;
     redraw();
 }
