@@ -87,7 +87,7 @@ function draw(){
             v.attr("fill","#f00");
         }
         else{
-            v.attr("fill",(vs[i].reachable>=0)?"#f00":"#ff0");
+            v.attr("fill",(vs[i].reachable>=0)?"#f00":"#fa0");
             v.attr("fill-opacity", 0.3);
             v.attr("cursor", "hand");
             v.click(change);
@@ -125,8 +125,8 @@ function redraw(){
     }
     for(var i=0;i<vs.length;++i){
         if(i==s || i==t){}
-        //else circles[i].attr("fill",(vs[i].reachable>=0)?"#f00":"#ff0");
-        else circles[i].animate({"fill":(vs[i].reachable>=0)?"#f00":"#ff0"},200);
+        //else circles[i].attr("fill",(vs[i].reachable>=0)?"#f00":"#fa0");
+        else circles[i].animate({"fill":(vs[i].reachable>=0)?"#f00":"#fa0"},200);
     }
     $("#step").text(step);
 }
