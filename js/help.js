@@ -6,8 +6,9 @@ var p;//Z_p
 var radius=15;//点の半径
 var forward_edges;//各点から出ていく枝集合
 var backward_edges;//各点に入る枝集合
-var paths;
-var circles;
+var paths;//枝
+var labels;//枝ラベル
+var circles;//頂点
 var step;
 var s;
 var t;
@@ -68,6 +69,7 @@ function load(file){
 function draw(){
     //draw edges
     paths = new Array();
+    labels = new Array();
     for(var i=0;i<es.length;++i){
         var x1 = vs[es[i].tail].x;
         var y1 = vs[es[i].tail].y;
@@ -85,6 +87,9 @@ function draw(){
         });
         if(p>2)e.attr("arrow-end", 'block-midium-midium');
         paths.push(e);
+        var h = 10;
+        var l = R.text((x1+x2)/2.0+(y2-y1)/d*h,(y1+y2)/2.0+(x1-x2)/d*h,es[i].label).attr({"font": '18px Fontin-Sans, Arial', stroke: "none", fill: Raphael.hsb(1.0/p*es[i].label, 1, 0.8)});
+        labels.push(l);
     }
     //draw vertices
     circles = new Array();
@@ -128,6 +133,8 @@ function redraw(){
     for(var i=0;i<es.length;++i){
         //paths[i].attr("stroke",Raphael.hsb(1.0/p*es[i].label, 1, 0.8));
         paths[i].animate({"stroke":Raphael.hsb(1.0/p*es[i].label, 1, 0.8)},200);
+        labels[i].attr({"text":es[i].label});
+        labels[i].animate({"fill":Raphael.hsb(1.0/p*es[i].label, 1, 0.8)},200);
     }
     for(var i=0;i<vs.length;++i){
         if(i==s || i==t){}
