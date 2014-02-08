@@ -10,6 +10,7 @@ var paths;
 var circles;
 var s;
 var t;
+var editable = true;
 
 $(function(){
     var prob = "prob/"+document.location.search.substring(1)+".json";
@@ -39,7 +40,7 @@ function load(file){
             vs.push({
                 x: this.x,
                 y: this.y,
-                reachable: false
+                reachable: -1
             });
             forward_edges.push(new Array());
             backward_edges.push(new Array());
@@ -63,7 +64,6 @@ function load(file){
 }
 
 function draw(){
-    check();
     //draw edges
     paths = new Array();
     for(var i=0;i<es.length;++i){
@@ -79,9 +79,9 @@ function draw(){
         ]).attr({
             'stroke-width': 5,
             'stroke': Raphael.hsb(1.0/p*es[i].label, 1, 0.8),
-            'arrow-end': 'block-midium-midium',
             //'arrow-start': 'oval-narrow-short'       
         });
+        if(p>2)e.attr("arrow-end", 'block-midium-midium');
         paths.push(e);
     }
     //draw vertices
@@ -94,7 +94,7 @@ function draw(){
             v.attr("fill","#f00");
         }
         else{
-            v.attr("fill",vs[i].reachable?"#f00":"#ff0");
+            v.attr("fill",(vs[i].reachable>=0)?"#f00":"#ff0");
             v.attr("fill-opacity", 0.3);
             v.click(change);
             v.mouseover(function(){this.animate({"fill-opacity": 1.0}, 300);})
@@ -117,26 +117,26 @@ function draw(){
             'stroke-width': 5,
             'stroke': Raphael.hsb(1.0/p*i, 1, 0.8),
             //'arrow-start': 'oval-narrow-short'       
-        });
-
-        
+        });        
     }
-
-
+    redraw();
 }
 function redraw(){
     check();
     for(var i=0;i<es.length;++i){
-        paths[i].attr("stroke",Raphael.hsb(1.0/p*es[i].label, 1, 0.8));
+        //paths[i].attr("stroke",Raphael.hsb(1.0/p*es[i].label, 1, 0.8));
+        paths[i].animate({"stroke":Raphael.hsb(1.0/p*es[i].label, 1, 0.8)},200);
     }
     for(var i=0;i<vs.length;++i){
-        if(i<=1){}
-        else circles[i].attr("fill",vs[i].reachable?"#f00":"#ff0");
+        if(i==s || i==t){}
+        //else circles[i].attr("fill",(vs[i].reachable>=0)?"#f00":"#ff0");
+        else circles[i].animate({"fill":(vs[i].reachable>=0)?"#f00":"#ff0"},200);
     }
 }
 
 function change(){
     console.log(this.id);
+    if(!editable)return;
     var c = circles[this.id];
     c.animate({r: radius+5}, 200);
     setTimeout(function(){c.animate({r: radius}, 200);},200);
@@ -149,26 +149,47 @@ function change(){
     }
     redraw();
 }
+function celebrate(v){
+    var prev = vs[v].reachable;
+    circles[v].animate({r: radius+10}, 200);
+    setTimeout(function(){circles[v].animate({r: radius}, 400);},200);
+    if(v==prev){
+        editable=true;
+        return;
+    }
+    setTimeout(celebrate,100,prev);
+}
 function check(){
     for(var i=0;i<vs.length;++i){
-        vs[i].reachable=false;
+        vs[i].reachable=-1;
     }
     var stack = new Array();
-    stack.push(t);
     stack.push(s);
+    stack.push(t);
+    vs[t].reachable=t;
+
     $("#info").text("");
     while(stack.length>0){
         var v = stack.pop();
-        if(vs[v].reachable)continue;
-        if(v==t && stack.length>0){
+        if(v==s && vs[s].reachable>=0 && stack.length==0){
             $("#info").text("You win!");
+            celebrate(s);
+            //alert("You win!");
         }
-        vs[v].reachable=true;
+        if(v==s && vs[s].reachable<0){
+            vs[s].reachable=s;
+        }
         for(var j=0;j<forward_edges[v].length;++j){
-            if(es[forward_edges[v][j]].label==0)stack.push(es[forward_edges[v][j]].head);            
+            if(es[forward_edges[v][j]].label==0 && vs[es[forward_edges[v][j]].head].reachable<0){
+                vs[es[forward_edges[v][j]].head].reachable=v;
+                stack.push(es[forward_edges[v][j]].head);
+            }
         }
         for(var j=0;j<backward_edges[v].length;++j){
-            if(es[backward_edges[v][j]].label==0)stack.push(es[backward_edges[v][j]].tail);
+            if(es[backward_edges[v][j]].label==0 && vs[es[backward_edges[v][j]].tail].reachable<0){
+                vs[es[backward_edges[v][j]].tail].reachable=v;
+                stack.push(es[backward_edges[v][j]].tail);
+            }
         }
     }
 }
