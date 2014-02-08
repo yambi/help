@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="yambi"/>
+<meta name="copyright" content="© 2014 yambi"/>
+<meta name="robots" content="noindex,nofollow"/>
+
+<link href="css/help.css" rel="stylesheet" type="text/css"> 
+<script type="application/javascript" src="./js/lib/raphael.js"></script>
+<script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="application/javascript" src="./js/util.js"></script>
+<script type="application/javascript" src="./js/help.js"></script>
+<title>Have an Exact Labelled Path?</title></head>
+<body onselectstart="return false">
+<h1> <span style="color:red;">H</span>ave an <span style="color:blue;">E</span>xact <span style="color:green;">L</span>abelled <span style="color:#FA0;">P</span>ath? </h1>
+<p>
+<input type="button" id="reset" value="reset" onclick="reset()">
+&nbsp;&nbsp;&nbsp;&nbsp;
+step: <span id="step">0</span>
+&nbsp;&nbsp;
+<span id="info"></span>
+</p>
+<table>
+<tr>
+  <td><div id="field"></div></td>
+  <td valign="top">
+    <div id="lines"></div>
+  </td>
+</tr>
+</table>
+<p>
+connect the vertices s and t with red edges.
+<ul>
+<li>頂点をクリックすると周りの枝の色が変わる</li>
+<li>枝の変化：出ていく枝は+方向，入ってくる枝は-方向に1変わる</li>
+</ul>
+</p>
+<a href="./index.html">back</a>
+
+</body>
+</html>
