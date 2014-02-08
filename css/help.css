@@ -4,16 +4,20 @@ body{
 
 tr, td{
   margin: 0px;
-  padding: 0px 8px;
+  padding: 4px 8px;
 }
 
 img{
     width: 128px;
     height: 96px;
-    background-color: white;
+    background-color: white;    
     border: 1px solid rgba(0,0,0,.15);
     border-radius: 5px;
     box-shadow: rgba(0,0,0,.5) -1px 1px 0, rgba(255,255,255,1) -1px 1px 0 inset;
+}
+
+img:hover{
+    background-color: #dcc;
 }
 
 
@@ -21,6 +25,15 @@ p{
   padding: 0px 8px;
 }
 
+span.level{
+    font-size: 20px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    width: 128px;
+    height: 96px;
+    color: red;
+}
 
 #field{
     width: 640px;
