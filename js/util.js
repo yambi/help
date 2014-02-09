@@ -9,6 +9,7 @@ var backward_edges;//各点に入る枝集合
 var paths;//枝
 var labels;//枝ラベル
 var circles;//頂点
+var mode=true;//directed mode
 var step;
 var s;
 var t;
@@ -17,6 +18,7 @@ var editable = true;
 function load(file){
     $.getJSON(file , function(data) {
         p=parseInt(data.p);
+        if(p==2)mode=false;
         s=parseInt(data.s);
         if(isNaN(s))s=0;
         t=parseInt(data.t);
@@ -71,7 +73,7 @@ function draw(){
             'stroke': Raphael.hsb(1.0/p*es[i].label, 1, 0.8),
             //'arrow-start': 'oval-narrow-short'       
         });
-        if(p>2)e.attr("arrow-end", 'block-midium-midium');
+        if(mode)e.attr("arrow-end", 'block-midium-midium');
         paths.push(e);
         var h = 10;
         var l = R.text((x1+x2)/2.0+(y2-y1)/d*h,(y1+y2)/2.0+(x1-x2)/d*h,es[i].label).attr({"font": '18px Fontin-Sans, Arial', stroke: "none", fill: Raphael.hsb(1.0/p*es[i].label, 1, 0.8)});
@@ -142,7 +144,8 @@ function change(){
         es[forward_edges[this.id][i]].label=(es[forward_edges[this.id][i]].label+1)%p;
     }
     for(var i=0;i<backward_edges[this.id].length;++i){
-        es[backward_edges[this.id][i]].label=(es[backward_edges[this.id][i]].label+p-1)%p;
+        if(mode)es[backward_edges[this.id][i]].label=(es[backward_edges[this.id][i]].label+p-1)%p;
+        else es[backward_edges[this.id][i]].label=(es[backward_edges[this.id][i]].label+1)%p;
     }
     step++;
     redraw();

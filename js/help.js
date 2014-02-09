@@ -8,6 +8,9 @@ $(function(){
     var lwidth = $(lines).innerWidth();
     var lheight = $(lines).innerHeight();
     L = Raphael(lines,lwidth,lheight);
+
+    mode=(document.location.hash.substring(1)!="undirected");
+    console.log(mode?"directed mode":"undirected mode");
     step=0;
     load(prob);
 });
