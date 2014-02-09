@@ -11,6 +11,7 @@ var labels;//枝ラベル
 var circles;//頂点
 var mode=true;//directed mode
 var step;
+var opt;
 var s;
 var t;
 var editable = true;
@@ -19,6 +20,8 @@ function load(file){
     $.getJSON(file , function(data) {
         p=parseInt(data.p);
         if(p==2)mode=false;
+        opt=parseInt(data.opt);
+        if(isNaN(opt))opt=0;
         s=parseInt(data.s);
         if(isNaN(s))s=0;
         t=parseInt(data.t);
@@ -55,6 +58,7 @@ function load(file){
 }
 
 function draw(){
+    if(opt>0)$("#opt").text("/"+opt);
     //draw edges
     paths = new Array();
     labels = new Array();
